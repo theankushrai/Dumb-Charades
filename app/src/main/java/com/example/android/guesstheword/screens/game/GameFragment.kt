@@ -17,9 +17,11 @@
 package com.example.android.guesstheword.screens.game
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,13 +44,24 @@ class GameFragment : Fragment() {
         viewModel =ViewModelProvider(this).get(GameViewModel::class.java)
 
         //set observers for score and word changes
-        viewModel.score.observe(viewLifecycleOwner, Observer {
-            binding.scoreText.text = it.toString()
+        viewModel.score.observe(viewLifecycleOwner, Observer {newScore->
+            binding.scoreText.text = newScore.toString()
         })
-        viewModel.word.observe(viewLifecycleOwner,Observer{
-            binding.wordText.text = it
+        viewModel.word.observe(viewLifecycleOwner,Observer{newString->
+            binding.wordText.text = newString
+        })
+        //set an observer for event changes
+
+        viewModel.eventGameFinished.observe(viewLifecycleOwner,{
+            if (it){
+            gameFinished()
+            viewModel.onGameFinishComplete()}
         })
 
+        //set an observer for timer
+        viewModel.currentTime.observe(viewLifecycleOwner, Observer {newTime->
+            binding.timerText.text=DateUtils.formatElapsedTime(newTime)
+        })
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
                 inflater,
@@ -67,10 +80,7 @@ class GameFragment : Fragment() {
         return binding.root
 
     }
-
-
-
-    /**
+ /**
      * Called when the game is finished
      */
     private fun gameFinished() {
