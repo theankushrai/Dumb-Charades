@@ -43,11 +43,7 @@ class GameFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         viewModel =ViewModelProvider(this).get(GameViewModel::class.java)
-        //set observers for score and word changes
-
-        viewModel.word.observe(viewLifecycleOwner,Observer{newString->
-            binding.wordText.text = newString
-        })
+       
         //set an observer for event changes
 
         viewModel.eventGameFinished.observe(viewLifecycleOwner,{
@@ -56,10 +52,7 @@ class GameFragment : Fragment() {
             viewModel.onGameFinishComplete()}
         })
 
-        //set an observer for timer
-        viewModel.currentTime.observe(viewLifecycleOwner, Observer {newTime->
-            binding.timerText.text=DateUtils.formatElapsedTime(newTime)
-        })
+
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
                 inflater,
