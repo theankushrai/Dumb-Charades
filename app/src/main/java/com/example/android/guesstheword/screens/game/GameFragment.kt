@@ -44,9 +44,7 @@ class GameFragment : Fragment() {
 
         viewModel =ViewModelProvider(this).get(GameViewModel::class.java)
         //set observers for score and word changes
-        viewModel.score.observe(viewLifecycleOwner, Observer {newScore->
-            binding.scoreText.text = newScore.toString()
-        })
+
         viewModel.word.observe(viewLifecycleOwner,Observer{newString->
             binding.wordText.text = newString
         })
@@ -69,7 +67,10 @@ class GameFragment : Fragment() {
                 container,
                 false
         )
+
+        //binding viewmodelwith data
         binding.gameViewModel=viewModel
+        binding.lifecycleOwner=this
         return binding.root
 
     }
