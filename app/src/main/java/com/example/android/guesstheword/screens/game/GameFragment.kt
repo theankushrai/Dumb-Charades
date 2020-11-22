@@ -41,8 +41,8 @@ class GameFragment : Fragment() {
     private lateinit var viewModel:GameViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        viewModel =ViewModelProvider(this).get(GameViewModel::class.java)
 
+        viewModel =ViewModelProvider(this).get(GameViewModel::class.java)
         //set observers for score and word changes
         viewModel.score.observe(viewLifecycleOwner, Observer {newScore->
             binding.scoreText.text = newScore.toString()
@@ -69,14 +69,7 @@ class GameFragment : Fragment() {
                 container,
                 false
         )
-
-
-        binding.correctButton.setOnClickListener {  viewModel.onCorrect()}
-        binding.skipButton.setOnClickListener { viewModel.onSkip()}
-
-
-
-
+        binding.gameViewModel=viewModel
         return binding.root
 
     }
