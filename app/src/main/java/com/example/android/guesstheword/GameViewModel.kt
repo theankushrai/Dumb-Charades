@@ -8,31 +8,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 
-class GameViewModel(application: Application) :AndroidViewModel(application){
+class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
         // These represent different important times
         // This is when the game is over
         const val DONE = 0L
+
         // This is the number of milliseconds in a second
         const val ONE_SECOND = 1000L
+
         // This is the total time of the game
-        const val COUNTDOWN_TIME = 10000L
+        const val COUNTDOWN_TIME = 300000L
     }
 
     // internal
     private val _score = MutableLiveData<Int>()
     private val _word = MutableLiveData<String>()
-    private val _eventGameFinished=MutableLiveData<Boolean>()
+    private val _eventGameFinished = MutableLiveData<Boolean>()
 
 
     //external
     val score: LiveData<Int>
-        get() =_score
-    val word:LiveData<String>
-        get() =_word
-    val eventGameFinished :LiveData<Boolean>
-        get()=_eventGameFinished
+        get() = _score
+    val word: LiveData<String>
+        get() = _word
+    val eventGameFinished: LiveData<Boolean>
+        get() = _eventGameFinished
 
 
     lateinit var wordList: MutableList<String>
@@ -53,9 +55,9 @@ class GameViewModel(application: Application) :AndroidViewModel(application){
     init {
         resetList()
         nextWord()
-        _word.value=wordList[0]
-        _score.value=0
-        _eventGameFinished.value=false
+        _word.value = wordList[0]
+        _score.value = 0
+        _eventGameFinished.value = false
 
         timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
 
@@ -73,8 +75,8 @@ class GameViewModel(application: Application) :AndroidViewModel(application){
 
     }
 
-    fun onGameFinishComplete(){
-        _eventGameFinished.value=false
+    fun onGameFinishComplete() {
+        _eventGameFinished.value = false
     }
 
     /**
@@ -82,44 +84,50 @@ class GameViewModel(application: Application) :AndroidViewModel(application){
      */
     private fun resetList() {
         wordList = mutableListOf(
-                "queen",
-                "hospital",
-                "basketball",
-                "cat",
-                "change",
-                "snail",
-                "soup",
-                "calendar",
-                "sad",
-                "desk",
-                "guitar",
-                "home",
-                "railway",
-                "zebra",
-                "jelly",
-                "car",
-                "crow",
-                "trade",
-                "bag",
-                "roll",
-                "bubble"
+            "queen",
+            "hospital",
+            "basketball",
+            "Fight Club",
+            "Jaws",
+            "Chef",
+            "Harry Potter",
+            "cat",
+            "change",
+            "snail",
+            "soup",
+            "calendar",
+            "sad",
+            "desk",
+            "guitar",
+            "home",
+            "railway",
+            "zebra",
+            "jelly",
+            "car",
+            "crow",
+            "trade",
+            "bag",
+            "roll",
+            "bubble"
         )
         wordList.shuffle()
     }
+
     private fun nextWord() {
         //Select and remove a word from the list
         if (wordList.isEmpty()) {
             resetList()
         }
-            _word.value = wordList.removeAt(0)
+        _word.value = wordList.removeAt(0)
     }
-     fun onSkip() {
-        _score.value= score.value?.minus(1)
+
+    fun onSkip() {
+        _score.value = score.value?.minus(1)
         nextWord()
     }
 
-     fun onCorrect() {
-        _score.value= score.value?.plus(1)
+    fun onCorrect() {
+        _score.value = score.value?.plus(1)
         nextWord()
     }
 
